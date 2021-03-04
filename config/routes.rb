@@ -6,5 +6,6 @@ Rails.application.routes.draw do
 
   resources :boards, defaults: {format: 'json'}
   resources :tasks , defaults: {format: 'json'}
+  resources :searches, only: :index, default: {format: 'json'}
 
 end
