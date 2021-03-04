@@ -15,7 +15,7 @@ class BoardsController < ApplicationController
   end
 
   def destroy
-    @board.destroy
+    @board.destroy  
     boards_all
   end
 
@@ -30,7 +30,7 @@ class BoardsController < ApplicationController
   end
 
   def boards_all
-    boards = Board.where(user_id: @current_user.id) 
+    boards = Board.where(user_id: @current_user&.id)
     render json: boards
   end
 end

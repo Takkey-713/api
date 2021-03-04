@@ -6,8 +6,8 @@ class TasksController < ApplicationController
   end
 
   def create
-    @task = Task.create(task_params)
-    tasks_all
+    @task = Task.new(task_params)
+    check_validate
   end
 
   def update
@@ -28,7 +28,7 @@ class TasksController < ApplicationController
   private
 
   def task_params
-    params.require(:task).permit(:name, :explanation, :deadline_dateapra, :board_id).merge(user_id: @current_user.id)
+    params.require(:task).permit(:name, :explanation, :deadline_date, :board_id).merge(user_id: @current_user.id)
   end
 
   def select_task
@@ -36,7 +36,18 @@ class TasksController < ApplicationController
   end
 
   def tasks_all
-    @tasks = Task.where(user_id: @current_user.id)
-    render :all_tasks
+    if @current_user
+    @tasks = Task.where(user_id: @current_user&.id)
+    render json: @tasks
+    else
+      head :no_content
+    end
+  end
+
+  def check_validate
+    if @task.valid?
+      @task.save!
+    end
+  tasks_all
   end
 end
