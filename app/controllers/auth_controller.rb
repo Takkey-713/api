@@ -2,6 +2,7 @@ class AuthController < ApplicationController
 
   def sign_up
     user = User.new(registration_params)
+    binding.pry
     if user.save
       session[:user_id] = user.id
       payload = {logged_in: true, user: user}
