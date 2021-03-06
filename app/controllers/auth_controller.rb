@@ -2,12 +2,13 @@ class AuthController < ApplicationController
 
   def sign_up
     user = User.new(registration_params)
-    binding.pry
     if user.save
       session[:user_id] = user.id
       payload = {logged_in: true, user: user}
+    elsif user.errors.messages[:email] = ["has already been taken"]
+      payload = {logged_in: false, errors: "入力されたメールアドレスは既に登録されています。"}
     else
-      payload = {logged_in: false, message: "認証に失敗しました。"}
+      payload = {logged_in: false, errors: "認証に失敗しました。"}
     end
      render json: payload
 end
@@ -18,7 +19,7 @@ end
       session[:user_id] = user.id
       payload = { logged_in: true, user: user }
     else
-      payload = { errors: 'メールアドレスまたはパスワードが正しくありません。' }
+      payload = { logged_in: false, errors: 'メールアドレスまたはパスワードが正しくありません。' }
     end
     render json: payload
   end
