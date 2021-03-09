@@ -12,7 +12,7 @@ class AuthController < ApplicationController
       session[:user_id] = user.id
       payload = { logged_in: true, user: user }
     else
-      payload = { errors: 'メールアドレスまたはパスワードが正しくありません。' }
+      payload = { logged_in: false, errors: 'メールアドレスまたはパスワードが正しくありません。' }
     end
     render json: payload
   end
