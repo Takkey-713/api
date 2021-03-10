@@ -1,8 +1,10 @@
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    Rails.ENV == "development"  ? origins 'localhost:3000' : origins '52.192.7.231'
-    # いじるポイント
-
+    if Rails.env.production?
+      origins '52.192.7.231'
+    else 
+      origins 'localhost:3000'
+    end
     resource '*',
       headers: :any,
       methods: [:get, :post, :put, :patch, :delete, :options, :head],
