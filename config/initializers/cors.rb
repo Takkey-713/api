@@ -1,6 +1,7 @@
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins 'localhost:3000'
+    Rails.ENV == "development"  ? origins 'localhost:3000' : origins '52.192.7.231'
+    # いじるポイント
 
     resource '*',
       headers: :any,
