@@ -45,7 +45,6 @@ class AuthController < ApplicationController
     elsif user.errors.full_messages.include?("Email has already been taken")
       payload = {logged_in: false, errors: "入力されたメールアドレスは既に登録されています。"}
     else
-      binding.pry
       payload = {logged_in: false, errors: "認証に失敗しました。"}
     end
   end
