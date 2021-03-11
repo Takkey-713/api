@@ -1,24 +1,7 @@
-# README
+task_appのバックエンドアプリケーションです。
+Ruby on railsを用いてフロントサイドと通信できるようになっています。
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+認証機能：
+deviseを用いずに、bcryptを用いてhas_secure_passwordメソッドでパスワードのハッシュ化を行ってます。
+current_userの情報を取り出す際には、sessionを用いてユーザー情報を保持し、ブラウザのクッキーで保存する形で実装しています。
 
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
