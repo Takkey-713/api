@@ -10,6 +10,7 @@ RSpec.describe Board, type: :model do
       @board.valid? 
       expect(@board.valid?).to eq true
     end
+  end
 
     context '登録ができない場合' do
       it "リストの名前の入力がない場合" do
@@ -24,5 +25,4 @@ RSpec.describe Board, type: :model do
         expect(@board.errors.full_messages).to include("User must exist")
       end
     end
-  end
 end
