@@ -12,7 +12,7 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe 'ユーザー登録ができない場合' do
+  context 'ユーザー登録ができない場合' do
     it "emailが空の場合" do
       @user.email = nil
       @user.valid?
