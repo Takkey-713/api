@@ -1,4 +1,4 @@
-class ListsController < ApplicationController]
+class ListsController < ApplicationController
   before_action :select_list, only: [:destroy, :update]
   def index
     lists_all

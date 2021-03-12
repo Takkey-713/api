@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   get "/check_login", to: "auth#check_login"
 
   resources :boards, defaults: {format: 'json'}
+  resources :lists, defaults: {format: 'json'}
   resources :tasks , defaults: {format: 'json'}
   resources :searches, only: :index, default: {format: 'json'}
 
