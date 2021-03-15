@@ -2,6 +2,7 @@ class TasksController < ApplicationController
   before_action :select_task, only: [:update, :destroy, :update_status]
 
   def index
+
     tasks_all
   end
 
@@ -28,7 +29,7 @@ class TasksController < ApplicationController
   private
 
   def task_params
-    params.require(:task).permit(:name, :explanation, :deadline_date, :board_id).merge(user_id: @current_user.id)
+    params.require(:task).permit(:name, :explanation, :deadline_date, :board_id, :list_id).merge(user_id: @current_user.id)
   end
 
   def select_task

@@ -22,7 +22,7 @@ class ListsController < ApplicationController
   private
 
   def list_params
-    params.require(:list).permit(:name).merge(user_id: @current_user.id)
+    params.require(:list).permit(:name,:board_id).merge(user_id: @current_user.id)
   end
 
   def select_list
