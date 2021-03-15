@@ -8,5 +8,5 @@ Rails.application.routes.draw do
   resources :lists, defaults: {format: 'json'}
   resources :tasks , defaults: {format: 'json'}
   resources :searches, only: :index, default: {format: 'json'}
-  match '*path', to: 'boards#nothing_response', via: :get
+  
 end

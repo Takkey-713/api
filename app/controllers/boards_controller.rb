@@ -19,8 +19,6 @@ class BoardsController < ApplicationController
     boards_all
   end
 
-  def nothing_response
-  end
 
   private
 
