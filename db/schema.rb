@@ -20,19 +20,32 @@ ActiveRecord::Schema.define(version: 2021_02_16_092815) do
     t.index ["user_id"], name: "index_boards_on_user_id"
   end
 
+  create_table "lists", charset: "utf8mb4", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "board_id"
+    t.string "name", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["board_id"], name: "index_lists_on_board_id"
+    t.index ["user_id"], name: "index_lists_on_user_id"
+  end
+
   create_table "tasks", charset: "utf8mb4", force: :cascade do |t|
     t.string "name"
     t.string "explanation"
     t.date "deadline_date"
     t.bigint "board_id"
     t.bigint "user_id"
+    t.bigint "list_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["board_id"], name: "index_tasks_on_board_id"
+    t.index ["list_id"], name: "index_tasks_on_list_id"
     t.index ["user_id"], name: "index_tasks_on_user_id"
   end
 
   create_table "users", charset: "utf8mb4", force: :cascade do |t|
+    t.string "nickname"
     t.string "password_digest"
     t.string "email"
     t.datetime "created_at", precision: 6, null: false
@@ -40,6 +53,9 @@ ActiveRecord::Schema.define(version: 2021_02_16_092815) do
   end
 
   add_foreign_key "boards", "users"
+  add_foreign_key "lists", "boards"
+  add_foreign_key "lists", "users"
   add_foreign_key "tasks", "boards"
+  add_foreign_key "tasks", "lists"
   add_foreign_key "tasks", "users"
 end
