@@ -2,11 +2,11 @@ class TasksController < ApplicationController
   before_action :select_task, only: [:update, :destroy, :update_status]
 
   def index
-
     tasks_all
   end
 
   def create
+    binding.pry
     @task = Task.new(task_params)
     check_validate
   end

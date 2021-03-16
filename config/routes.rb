@@ -8,5 +8,5 @@ Rails.application.routes.draw do
   resources :lists, defaults: {format: 'json'}
   resources :tasks , defaults: {format: 'json'}
   resources :searches, only: :index, default: {format: 'json'}
-  get "*path" => redirect("/")
+  get "*path" , to: "exception#redirect"
 end
