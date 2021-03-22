@@ -7,8 +7,6 @@ class TasksController < ApplicationController
 
   def create
     @task = Task.new(task_params)
-
-    binding.pry
     check_validate
   end
 

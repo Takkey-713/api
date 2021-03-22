@@ -4,7 +4,11 @@ Rails.application.routes.draw do
   delete "sign_out", to: "auth#sign_out"
   get "/check_login", to: "auth#check_login"
 
-  resources :boards, defaults: {format: 'json'}
+  resources :boards, defaults: {format: 'json'} do
+    member do
+      get :select
+    end
+  end
   resources :lists, defaults: {format: 'json'}
   resources :tasks , defaults: {format: 'json'}
   resources :searches, only: :index, default: {format: 'json'}

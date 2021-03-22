@@ -10,13 +10,19 @@ class BoardsController < ApplicationController
   end
 
   def update
-    @board.update(name: params[:name])
+    @board.update!(board_params)
     boards_all
   end
 
   def destroy
     @board.destroy  
     boards_all
+  end
+
+
+  def select
+    @board = select_board
+    render json: @board
   end
 
 
