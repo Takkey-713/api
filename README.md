@@ -10,7 +10,9 @@ bcryptを使用し、has_secure_passwordメソッドでパスワードのハッ�
 
 オリジンの許容：
 フロントエンドからのリクエストを許可するために、cors.rbに設定しております。
-ローカル環境では、http://localhost://3000番、本番環境では、http://task-app-demo.comを許容しています。
+ローカル環境では、http://localhost://3000
+本番環境では、http://task-app-demo.com
+を許容しています。
 
 テストツール：
 Rspecを用いてテストをしております。
