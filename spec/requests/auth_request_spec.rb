@@ -77,4 +77,20 @@ RSpec.describe "Auth", type: :request do
     end
   end
 
+  describe "sign_out" do
+    before do
+      @user = FactoryBot.create(:user)
+    end
+
+    context 'サインアウトできる場合' do
+      it 'サインアウトに成功する' do
+        post sign_in_path, params: {user: {email: @user.email, password: @user.password}}, xhr: true
+        expect(response).to have_http_status(200)
+        delete sign_out_path, xhr: true
+        res = JSON.parse(response.body)
+        expect(res["logged_in"]).to eq false 
+      end
+    end
+  end
+
 end
