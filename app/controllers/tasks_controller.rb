@@ -20,11 +20,6 @@ class TasksController < ApplicationController
     tasks_all
   end
 
-  def update_status
-    @task.update(status: params[:status])
-    tasks_all
-  end
-
   private
 
   def task_params
