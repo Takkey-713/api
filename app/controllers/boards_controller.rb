@@ -5,13 +5,24 @@ class BoardsController < ApplicationController
   end
 
   def create
-    Board.create(board_params)
-    boards_all
+    @board = Board.new(board_params)
+    if @board.save
+      boards_all
+    elsif @board.errors.full_messages.include?("Name can't be blank")
+      render json: {errors: "ボードの名前を入力してください。"}
+    else
+      render json: {errors: "ログインしてください。"}
+    end
   end
 
   def update
-    @board.update!(board_params)
-    boards_all
+    if @board.update(board_params)
+      boards_all
+    elsif @board.errors.full_messages.include?("Name can't be blank")
+      render json: {errors: "ボードの名前を入力してください。"}
+    else
+      render json: {errors: "ログインしてください。"}
+    end
   end
 
   def destroy
@@ -29,7 +40,7 @@ class BoardsController < ApplicationController
   private
 
   def board_params
-    params.require(:board).permit(:name).merge(user_id: @current_user.id)
+    params.require(:board).permit(:name).merge(user_id: @current_user&.id)
   end
 
   def select_board

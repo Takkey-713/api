@@ -5,13 +5,28 @@ class ListsController < ApplicationController
   end
 
   def create
-    List.create(list_params)
-    lists_all
+    @list = List.new(list_params)
+    if @list.save 
+      lists_all
+    elsif @list.errors.full_messages.include?("User must exist")
+      render json: {errors: "ログインしてください。"}
+    elsif @list.errors.full_messages.include?("Name can't be blank")
+      render json: {errors: "リストの名前を入力してください。"}
+    else 
+      render json: {errors: "ボードを作成してください。"}
+    end
   end
 
   def update
-    @list.update(name: params[:name])
-    lists_all
+    if @list.update(list_params)
+      lists_all
+    elsif @list.errors.full_messages.include?("User must exist")
+      render json: {errors: "ログインしてください。"}
+    elsif @list.errors.full_messages.include?("Name can't be blank")
+      render json: {errors: "リストの名前を入力してください。"}
+    else 
+      render json: {errors: "ボードを作成してください。"}
+    end
   end
 
   def destroy
@@ -22,7 +37,7 @@ class ListsController < ApplicationController
   private
 
   def list_params
-    params.require(:list).permit(:name,:board_id).merge(user_id: @current_user.id)
+    params.require(:list).permit(:name,:board_id).merge(user_id: @current_user&.id)
   end
 
   def select_list
@@ -30,6 +45,7 @@ class ListsController < ApplicationController
   end
 
   def lists_all
+
     lists = List.where(user_id: @current_user&.id)
     render json: lists
   end

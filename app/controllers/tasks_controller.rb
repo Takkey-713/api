@@ -11,8 +11,7 @@ class TasksController < ApplicationController
   end
 
   def update
-    @task.update(task_params)
-    tasks_all
+    validate_update
   end
 
   def destroy
@@ -20,15 +19,10 @@ class TasksController < ApplicationController
     tasks_all
   end
 
-  def update_status
-    @task.update(status: params[:status])
-    tasks_all
-  end
-
   private
 
   def task_params
-    params.require(:task).permit(:name, :explanation, :deadline_date, :board_id, :list_id).merge(user_id: @current_user.id)
+    params.require(:task).permit(:name, :explanation, :deadline_date, :board_id, :list_id).merge(user_id: @current_user&.id)
   end
 
   def select_task
@@ -45,9 +39,30 @@ class TasksController < ApplicationController
   end
 
   def check_validate
-    if @task.valid?
-      @task.save!
+    if @task.save
+      tasks_all
+    elsif @task.errors.full_messages.include?("Name can't be blank")
+      render json: {errors: "タスクの名前を入力してください。"}
+    elsif @task.errors.full_messages.include?("User must exist")
+      render json: {errors: "ログインしてください。"}
+    elsif @task.errors.full_messages.include?("Board must exist")
+      render json: {errors: "ボードを作成してください。"}
+    else
+      render json: {errors: "リストを作成してください。"}
     end
-  tasks_all
+  end
+
+  def validate_update
+    if @task.update(task_params)
+      tasks_all
+    elsif @task.errors.full_messages.include?("Name can't be blank")
+      render json: {errors: "タスクの名前を入力してください。"}
+    elsif @task.errors.full_messages.include?("User must exist")
+      render json: {errors: "ログインしてください。"}
+    elsif @task.errors.full_messages.include?("Board must exist")
+      render json: {errors: "ボードを作成してください。"}
+    else
+      render json: {errors: "リストを作成してください。"}
+    end
   end
 end
