@@ -14,7 +14,6 @@ RSpec.describe "Auth", type: :request do
         expect(response.status).to eq 200
         res = JSON.parse(response.body) 
         expect(res["user"]["email"]).to eq @user[:email]
-        # 一意のメールアドレスが一致するか確認
       end
     end
 

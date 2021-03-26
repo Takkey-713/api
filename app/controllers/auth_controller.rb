@@ -47,5 +47,6 @@ class AuthController < ApplicationController
     else
       payload = {logged_in: false, errors: "認証に失敗しました。"}
     end
+    render json: payload
   end
 end
