@@ -9,9 +9,11 @@ class BoardsController < ApplicationController
     if @board.save
       boards_all
     elsif @board.errors.full_messages.include?("Name can't be blank")
-      render json: {errors: "ボードの名前を入力してください。"}
+      boards = Board.where(user_id: @current_user&.id)
+      render json: boards, errors: "ボードの名前を入力してください。"
     else
-      render json: {errors: "ログインしてください。"}
+      boards = Board.where(user_id: @current_user&.id)
+      render json: boards, errors: "ログインしてください。"
     end
   end
 
@@ -19,9 +21,11 @@ class BoardsController < ApplicationController
     if @board.update(board_params)
       boards_all
     elsif @board.errors.full_messages.include?("Name can't be blank")
-      render json: {errors: "ボードの名前を入力してください。"}
+      boards = Board.where(user_id: @current_user&.id)
+      render json: boards, errors: "ボードの名前を入力してください。"
     else
-      render json: {errors: "ログインしてください。"}
+      boards = Board.where(user_id: @current_user&.id)
+      render json: boards, errors: "ログインしてください。"
     end
   end
 

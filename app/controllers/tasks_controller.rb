@@ -42,13 +42,17 @@ class TasksController < ApplicationController
     if @task.save
       tasks_all
     elsif @task.errors.full_messages.include?("Name can't be blank")
-      render json: {errors: "タスクの名前を入力してください。"}
+      @tasks = Task.where(user_id: @current_user&.id)
+      render json: @tasks, errors: "タスクの名前を入力してください。"
     elsif @task.errors.full_messages.include?("User must exist")
-      render json: {errors: "ログインしてください。"}
+      @tasks = Task.where(user_id: @current_user&.id)
+      render json: @tasks, errors: "ログインしてください。"
     elsif @task.errors.full_messages.include?("Board must exist")
-      render json: {errors: "ボードを作成してください。"}
+      @tasks = Task.where(user_id: @current_user&.id)
+      render json: @tasks, errors: "ボードを作成してください。"
     else
-      render json: {errors: "リストを作成してください。"}
+      @tasks = Task.where(user_id: @current_user&.id)
+      render json: @tasks, errors: "リストを作成してください。"
     end
   end
 
@@ -56,12 +60,16 @@ class TasksController < ApplicationController
     if @task.update(task_params)
       tasks_all
     elsif @task.errors.full_messages.include?("Name can't be blank")
-      render json: {errors: "タスクの名前を入力してください。"}
+      @tasks = Task.where(user_id: @current_user&.id)
+      render json: @tasks, errors: "タスクの名前を入力してください。"
     elsif @task.errors.full_messages.include?("User must exist")
+      @tasks = Task.where(user_id: @current_user&.id)
       render json: {errors: "ログインしてください。"}
     elsif @task.errors.full_messages.include?("Board must exist")
+      @tasks = Task.where(user_id: @current_user&.id)
       render json: {errors: "ボードを作成してください。"}
     else
+      @tasks = Task.where(user_id: @current_user&.id)
       render json: {errors: "リストを作成してください。"}
     end
   end
