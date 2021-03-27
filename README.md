@@ -15,6 +15,6 @@ bcryptを使用し、has_secure_passwordメソッドでパスワードのハッ�
 を許容しています。
 
 テストツール：
-Rspecを用いてテストをしております。
+Rspec
 
 以上
