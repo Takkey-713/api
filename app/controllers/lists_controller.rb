@@ -11,7 +11,8 @@ class ListsController < ApplicationController
     elsif @list.errors.full_messages.include?("User must exist")
       render json: {errors: "ログインしてください。"}
     elsif @list.errors.full_messages.include?("Name can't be blank")
-      render json: {errors: "リストの名前を入力してください。"}
+      lists = List.where(user_id: @current_user&.id)
+      render json: lists, errors: "リストの名前を入力してください。"
     else 
       render json: {errors: "ボードを作成してください。"}
     end
@@ -23,7 +24,8 @@ class ListsController < ApplicationController
     elsif @list.errors.full_messages.include?("User must exist")
       render json: {errors: "ログインしてください。"}
     elsif @list.errors.full_messages.include?("Name can't be blank")
-      render json: {errors: "リストの名前を入力してください。"}
+      lists = List.where(user_id: @current_user&.id)
+      render json: lists, errors: "リストの名前を入力してください。"
     else 
       render json: {errors: "ボードを作成してください。"}
     end
