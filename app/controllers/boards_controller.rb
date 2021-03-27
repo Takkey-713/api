@@ -8,24 +8,16 @@ class BoardsController < ApplicationController
     @board = Board.new(board_params)
     if @board.save
       boards_all
-    elsif @board.errors.full_messages.include?("Name can't be blank")
-      boards = Board.where(user_id: @current_user&.id)
-      render json: boards, errors: "ボードの名前を入力してください。"
     else
-      boards = Board.where(user_id: @current_user&.id)
-      render json: boards, errors: "ログインしてください。"
+      boards_all
     end
   end
 
   def update
     if @board.update(board_params)
       boards_all
-    elsif @board.errors.full_messages.include?("Name can't be blank")
-      boards = Board.where(user_id: @current_user&.id)
-      render json: boards, errors: "ボードの名前を入力してください。"
     else
-      boards = Board.where(user_id: @current_user&.id)
-      render json: boards, errors: "ログインしてください。"
+      boards_all
     end
   end
 

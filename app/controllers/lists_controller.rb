@@ -8,26 +8,16 @@ class ListsController < ApplicationController
     @list = List.new(list_params)
     if @list.save 
       lists_all
-    elsif @list.errors.full_messages.include?("User must exist")
-      render json: {errors: "ログインしてください。"}
-    elsif @list.errors.full_messages.include?("Name can't be blank")
-      lists = List.where(user_id: @current_user&.id)
-      render json: lists, errors: "リストの名前を入力してください。"
     else 
-      render json: {errors: "ボードを作成してください。"}
+      lists_all
     end
   end
 
   def update
     if @list.update(list_params)
       lists_all
-    elsif @list.errors.full_messages.include?("User must exist")
-      render json: {errors: "ログインしてください。"}
-    elsif @list.errors.full_messages.include?("Name can't be blank")
-      lists = List.where(user_id: @current_user&.id)
-      render json: lists, errors: "リストの名前を入力してください。"
     else 
-      render json: {errors: "ボードを作成してください。"}
+      lists_all
     end
   end
 
@@ -47,7 +37,6 @@ class ListsController < ApplicationController
   end
 
   def lists_all
-
     lists = List.where(user_id: @current_user&.id)
     render json: lists
   end

@@ -28,14 +28,14 @@ RSpec.describe "Lists", type: :request do
         @list[:name] = ""
         post lists_path, params: {list: @list}, xhr: true
         res = JSON.parse(response.body)
-        expect(res["errors"]).to include("リストの名前を入力してください。")
+        expect(res).to eq []
       end
 
       it 'ユーザーidが存在しない場合' do
         @list[:user_id] = nil
         post lists_path, params: {list: @list}, xhr: true
         res = JSON.parse(response.body)
-        expect(res["errors"]).to include("ログインしてください。")
+        expect(res).to eq []
       end
 
       it 'ボードidが存在しない' do
@@ -44,7 +44,7 @@ RSpec.describe "Lists", type: :request do
         expect(response).to have_http_status(200)
         post lists_path, params: {list: @list}, xhr: true
         res = JSON.parse(response.body)
-        expect(res["errors"]).to include("ボードを作成してください。")
+        expect(res).to eq []
       end
     end
   end
@@ -62,7 +62,7 @@ RSpec.describe "Lists", type: :request do
         patch "/lists/#{@list.id}", params: {list: {name: @list.name, user_id: @list.user.id, board_id: @list.board.id}}, xhr: true
         res = JSON.parse(response.body)
         res.each do |data|
-          expect(data["name"]).to include @list.name
+          expect(data["name"]).to eq @list.name
         end
       end
     end
@@ -74,23 +74,28 @@ RSpec.describe "Lists", type: :request do
         expect(response).to have_http_status(200)
         patch "/lists/#{@list.id}", params: {list: {name: @list.name, user_id: @list.user.id, board_id: @list.board.id}}, xhr: true
         res = JSON.parse(response.body)
-        expect(res["errors"]).to include("リストの名前を入力してください。")
+        res.each do |data|
+          expect(data["name"]).not_to eq @list.name
+        end
       end
 
       it 'ユーザーidが存在しない場合' do
         @list.user.id = nil
         patch "/lists/#{@list.id}", params: {list: {name: @list.name, user_id: @list.user.id, board_id: @list.board.id}}, xhr: true
         res = JSON.parse(response.body)
-        expect(res["errors"]).to include("ログインしてください。")
+        expect(res).to eq []
       end
 
-      it 'ユーザーidが存在しない場合' do
+      it 'ボードidが存在しない場合' do
+        @list[:name] = "updated!!"
         @list.board.id = nil
         post sign_in_path, params: {user: {email: @list.user.email, password: @list.user.password}},xhr: true
         expect(response).to have_http_status(200)
         patch "/lists/#{@list.id}", params: {list: {name: @list.name, user_id: @list.user.id, board_id: @list.board.id}}, xhr: true
         res = JSON.parse(response.body)
-        expect(res["errors"]).to include("ボードを作成してください。")
+        res.each do |data|
+          expect(data["name"]).not_to eq @list.name
+        end
       end
     end
   end
