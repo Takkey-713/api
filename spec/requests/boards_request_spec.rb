@@ -28,14 +28,14 @@ RSpec.describe "Boards", type: :request do
         @board[:name] = ""
         post boards_path, params: {board: @board}, xhr: true
         res = JSON.parse(response.body)
-        expect(res["errors"]).to include("ボードの名前を入力してください。")
+        expect(res).to eq []
       end
 
       it 'ユーザーidが存在しない場合' do
         @board[:user_id] = nil
         post boards_path, params: {board: @board}, xhr: true
         res = JSON.parse(response.body)
-        expect(res["errors"]).to include("ログインしてください")
+        expect(res).to eq []
       end
     end
   end
@@ -67,13 +67,14 @@ RSpec.describe "Boards", type: :request do
         @board[:name] = ""
         patch "/boards/#{@board.id}", params: {board: {id: @board.id, name: @board.name, user_id: @user.id}}, xhr: true
         res = JSON.parse(response.body)
+        expect(res).to eq []
       end
 
       it 'ユーザーidが存在しない' do
         @board.user_id = nil
         patch "/boards/#{@board.id}", params: {board: {id: @board.id, name: @board.name, user_id: @board.user_id}}, xhr: true
         res = JSON.parse(response.body)
-        expect(res["errors"]).to include("ログインしてください。")
+        expect(res).to eq []
       end
     end
   end 

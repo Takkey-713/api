@@ -27,7 +27,7 @@ RSpec.describe "Tasks", type: :request do
         @task[:user_id] = nil
         post tasks_path, params: {task: @task}, xhr: true
         res = JSON.parse(response.body)
-        expect(res["errors"]).to include("ログインしてください。")
+        expect(res).to eq []
       end
     end
 
@@ -37,7 +37,7 @@ RSpec.describe "Tasks", type: :request do
       @task[:board_id] = nil
       post tasks_path, params: {task: @task}, xhr:true
       res = JSON.parse(response.body)
-      expect(res["errors"]).to include("ボードを作成してください。")
+      expect(res).to eq []
     end
 
     it 'リストidが存在しない場合' do
@@ -46,7 +46,7 @@ RSpec.describe "Tasks", type: :request do
       @task[:list_id] = nil
       post tasks_path, params: {task: @task}, xhr:true
       res = JSON.parse(response.body)
-      expect(res["errors"]).to include("リストを作成してください。")
+      expect(res).to eq []
     end
   end
 
@@ -71,13 +71,14 @@ RSpec.describe "Tasks", type: :request do
     context 'タスクの更新ができない場合' do
       before do
         @task = FactoryBot.create(:task)
+        @task.name = "updated!!"
       end
 
       it 'ユーザーidが存在しない' do
         @task.user.id = nil
         patch "/tasks/#{@task.id}", params: {task: {id: @task.id, name: @task.name, explanation: @task.explanation, deadline_date: @task.deadline_date, user_id: @task.user.id, board_id: @task.board.id, list_id: @task.list.id}}, xhr: true
         res = JSON.parse(response.body)
-          expect(res["errors"]).to include("ログインしてください。")
+          expect(res).to eq []
       end
 
       it 'ボードidが存在しない' do
@@ -86,7 +87,9 @@ RSpec.describe "Tasks", type: :request do
         @task.board.id = nil
         patch "/tasks/#{@task.id}", params: {task: {id: @task.id, name: @task.name, explanation: @task.explanation, deadline_date: @task.deadline_date, user_id: @task.user.id, board_id: @task.board.id, list_id: @task.list.id}}, xhr: true
         res = JSON.parse(response.body)
-        expect(res["errors"]).to include("ボードを作成してください。")
+        res.each do |data|
+          expect(data["name"]).not_to eq @task.name
+        end
       end
 
       it 'リストidが存在しない場合' do
@@ -95,7 +98,9 @@ RSpec.describe "Tasks", type: :request do
         @task.list.id = nil
         patch "/tasks/#{@task.id}", params: {task: {id: @task.id, name: @task.name, explanation: @task.explanation, deadline_date: @task.deadline_date, user_id: @task.user.id, board_id: @task.board.id, list_id: @task.list.id}}, xhr: true
         res = JSON.parse(response.body)
-        expect(res["errors"]).to include("リストを作成してください。")
+        res.each do |data|
+          expect(data["name"]).not_to eq @task.name
+        end
       end
       it 'タスクの名前の入力がない場合' do
         post sign_in_path, params: {user: {email: @task.user.email, password: @task.user.password}},xhr: true
@@ -103,7 +108,9 @@ RSpec.describe "Tasks", type: :request do
         @task.name = ""
         patch "/tasks/#{@task.id}", params: {task: {id: @task.id, name: @task.name, explanation: @task.explanation, deadline_date: @task.deadline_date, user_id: @task.user.id, board_id: @task.board.id, list_id: @task.list.id}}, xhr: true
         res = JSON.parse(response.body)
-        expect(res["errors"]).to include("タスクの名前を入力してください。")
+        res.each do |data|
+          expect(data["name"]).not_to eq @task.name
+        end
       end
     end
   end
@@ -120,20 +127,6 @@ RSpec.describe "Tasks", type: :request do
         delete "/tasks/#{@task.id}", params: {task: @task}, xhr: true
         res = JSON.parse(response.body)
         expect(res).to eq []
-      end
-    end
-  end
-
-  describe '' do
-    context '' do
-      it '' do
-      end
-    end
-  end
-
-  describe '' do
-    context '' do
-      it '' do
       end
     end
   end
